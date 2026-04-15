@@ -104,15 +104,68 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section id="type-select" aria-labelledby="type-select-heading">
+      <Section
+        id="type-select"
+        aria-labelledby="type-select-heading"
+        className="bg-neutral-50/50"
+      >
         <Container>
-          <SectionHeader>
-            <SectionTitle id="type-select-heading">유형 선택</SectionTitle>
+          <SectionHeader className="max-w-2xl">
+            <SectionTitle id="type-select-heading">
+              목적에 맞는 유형을 선택하세요
+            </SectionTitle>
             <SectionDescription>
-              랜딩·홈 등 제작 유형 안내 — placeholder
+              전환에 집중할지, 정보 전달에 집중할지 정하면 기획과 견적 방향이
+              빨라집니다.
             </SectionDescription>
           </SectionHeader>
-          <SectionPlaceholder label="유형 선택 영역" />
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-2 lg:gap-8">
+            <article
+              className="group flex h-full flex-col rounded-xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-neutral-400 hover:shadow-md lg:p-8"
+              data-template-kind="conversion"
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                전환형
+              </p>
+              <h3 className="mt-2 text-xl font-semibold tracking-tight text-neutral-900">
+                목표 행동이 분명한 페이지
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-neutral-700">
+                문의·가입·구매 등 <strong>한 가지 전환</strong>에 맞춰 구조와
+                카피를 설계합니다.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+                캠페인 랜딩, 제품 런칭, 리드 수집처럼 &ldquo;지금 행동&rdquo;을
+                유도할 때 적합합니다.
+              </p>
+              <p className="mt-auto pt-6 text-sm font-medium text-neutral-900 underline-offset-4 transition group-hover:underline">
+                이 유형으로 알아보기
+              </p>
+            </article>
+
+            <article
+              className="group flex h-full flex-col rounded-xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-neutral-400 hover:shadow-md lg:p-8"
+              data-template-kind="info"
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                정보형
+              </p>
+              <h3 className="mt-2 text-xl font-semibold tracking-tight text-neutral-900">
+                신뢰와 탐색을 돕는 페이지
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-neutral-700">
+                회사·서비스·콘텐츠를 <strong>구조적으로 소개</strong>하고
+                탐색하기 쉽게 만듭니다.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+                브랜드 신뢰, 검색 유입, 담당자 연결이 목적일 때 적합합니다.
+              </p>
+              <p className="mt-auto pt-6 text-sm font-medium text-neutral-900 underline-offset-4 transition group-hover:underline">
+                이 유형으로 알아보기
+              </p>
+            </article>
+          </div>
         </Container>
       </Section>
 
