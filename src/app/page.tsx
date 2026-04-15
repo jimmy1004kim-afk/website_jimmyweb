@@ -7,6 +7,7 @@ import {
   SectionHeader,
   SectionTitle,
 } from "@/components/common/Section";
+import { services } from "@/data/services";
 import { siteMeta } from "@/data/site";
 
 function SectionPlaceholder({ label }: { label: string }) {
@@ -171,13 +172,50 @@ export default function HomePage() {
 
       <Section id="services-summary" aria-labelledby="services-heading">
         <Container>
-          <SectionHeader>
+          <SectionHeader className="max-w-2xl">
             <SectionTitle id="services-heading">서비스 요약</SectionTitle>
             <SectionDescription>
-              제공 서비스 카드 요약 — placeholder
+              랜딩부터 운영까지, 필요한 범위만 골라 맞춤 제안드립니다.
             </SectionDescription>
           </SectionHeader>
-          <SectionPlaceholder label="서비스 요약" />
+
+          <ul className="mt-10 grid list-none gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {services.map((service) => (
+              <li key={service.id}>
+                <article className="flex h-full flex-col rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+                  <h3 className="text-base font-semibold tracking-tight text-neutral-900">
+                    {service.name}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+                    {service.shortDescription}
+                  </p>
+                  <ul className="mt-4 space-y-2 border-t border-neutral-100 pt-4 text-sm text-neutral-700">
+                    {service.highlights.slice(0, 3).map((line, index) => (
+                      <li
+                        key={`${service.id}-highlight-${index}`}
+                        className="flex gap-2"
+                      >
+                        <span
+                          className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-neutral-400"
+                          aria-hidden
+                        />
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-10 text-center">
+            <Link
+              href="/services"
+              className="text-sm font-medium text-neutral-900 underline-offset-4 hover:underline"
+            >
+              전체 서비스 보기
+            </Link>
+          </p>
         </Container>
       </Section>
 
