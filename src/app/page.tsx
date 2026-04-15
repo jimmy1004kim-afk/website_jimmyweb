@@ -90,6 +90,30 @@ const templateKindLabel: Record<TemplateKind, string> = {
   info: "정보형",
 };
 
+const homeTestimonials = [
+  {
+    id: "ht-1",
+    quote:
+      "런칭 일정에 맞춰 빠르게 반영해 주셨고, 전환 목표도 함께 잡아 주셨습니다.",
+    name: "김○○ 님",
+    meta: "B2B SaaS · 랜딩 제작",
+  },
+  {
+    id: "ht-2",
+    quote:
+      "메뉴와 매장 안내가 한눈에 들어오게 정리돼 문의·예약 문의가 늘었습니다.",
+    name: "이○○ 님",
+    meta: "로컬 카페 · 홈페이지",
+  },
+  {
+    id: "ht-3",
+    quote:
+      "정보 구조부터 잡아 주셔서 담당자가 바뀌어도 수정·운영이 수월합니다.",
+    name: "(주)○○테크",
+    meta: "제조·B2B · 기업 사이트 개편",
+  },
+] as const;
+
 function SectionPlaceholder({ label }: { label: string }) {
   return (
     <div
@@ -441,13 +465,39 @@ export default function HomePage() {
 
       <Section id="testimonials" aria-labelledby="testimonials-heading">
         <Container>
-          <SectionHeader>
-            <SectionTitle id="testimonials-heading">후기</SectionTitle>
+          <SectionHeader className="max-w-2xl">
+            <SectionTitle id="testimonials-heading">고객 후기</SectionTitle>
             <SectionDescription>
-              고객 후기 · 로고 등 — placeholder
+              실제 프로젝트를 경험한 분들의 짧은 소감입니다. 상담 전 마지막으로
+              참고해 주세요.
             </SectionDescription>
           </SectionHeader>
-          <SectionPlaceholder label="후기" />
+
+          <ul className="mt-10 grid list-none gap-6 lg:grid-cols-3">
+            {homeTestimonials.map((item) => (
+              <li key={item.id}>
+                <figure className="flex h-full flex-col rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+                  <blockquote className="flex-1">
+                    <p className="text-sm leading-relaxed text-neutral-700">
+                      <span className="text-neutral-400" aria-hidden>
+                        &ldquo;
+                      </span>
+                      {item.quote}
+                      <span className="text-neutral-400" aria-hidden>
+                        &rdquo;
+                      </span>
+                    </p>
+                  </blockquote>
+                  <figcaption className="mt-6 border-t border-neutral-100 pt-4">
+                    <p className="text-sm font-semibold text-neutral-900">
+                      {item.name}
+                    </p>
+                    <p className="mt-1 text-xs text-neutral-500">{item.meta}</p>
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
         </Container>
       </Section>
 
