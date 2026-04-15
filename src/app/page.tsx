@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/common/Container";
-import { getButtonClassName } from "@/components/common/Button";
+import { Button, getButtonClassName } from "@/components/common/Button";
 import {
   Section,
   SectionDescription,
@@ -113,17 +113,6 @@ const homeTestimonials = [
     meta: "제조·B2B · 기업 사이트 개편",
   },
 ] as const;
-
-function SectionPlaceholder({ label }: { label: string }) {
-  return (
-    <div
-      className="mt-8 min-h-[7rem] rounded-lg border border-dashed border-neutral-200 bg-neutral-50/80 px-4 py-6 text-center text-sm text-neutral-400"
-      aria-hidden
-    >
-      {label} — 추후 구현
-    </div>
-  );
-}
 
 export default function HomePage() {
   return (
@@ -501,15 +490,39 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section id="cta" aria-labelledby="cta-heading">
+      <Section
+        id="cta"
+        aria-labelledby="cta-heading"
+        className="border-t border-neutral-800 bg-neutral-900"
+      >
         <Container>
-          <SectionHeader>
-            <SectionTitle id="cta-heading">문의 CTA</SectionTitle>
-            <SectionDescription>
-              상담·문의 유도 — placeholder
-            </SectionDescription>
-          </SectionHeader>
-          <SectionPlaceholder label="CTA" />
+          <div className="mx-auto max-w-2xl text-center">
+            <SectionHeader className="items-center text-center">
+              <SectionTitle
+                id="cta-heading"
+                className="text-balance text-white sm:text-3xl"
+              >
+                지금 문의하고 맞춤 견적을 받아보세요
+              </SectionTitle>
+              <SectionDescription className="mx-auto max-w-lg text-neutral-300">
+                상담은 무료입니다. 일정과 범위만 짧게 나눠도 됩니다.
+              </SectionDescription>
+            </SectionHeader>
+
+            <div className="mt-8 flex justify-center">
+              <Button type="button" size="lg" variant="secondary">
+                {siteMeta.ctaLabel}
+              </Button>
+            </div>
+
+            <p className="mt-6 text-xs text-neutral-400">
+              무료 상담
+              <span className="mx-2 text-neutral-600" aria-hidden>
+                ·
+              </span>
+              영업일 기준 빠른 응답
+            </p>
+          </div>
         </Container>
       </Section>
     </>
