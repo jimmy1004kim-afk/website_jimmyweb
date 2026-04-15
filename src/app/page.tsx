@@ -14,7 +14,56 @@ import {
   type TemplateKind,
   type TemplateServiceType,
 } from "@/data/templates";
+import {
+  portfolioItems,
+  type PortfolioIndustry,
+  type PortfolioItem,
+  type PortfolioProjectType,
+  type PortfolioServiceType,
+} from "@/data/portfolio";
 import { siteMeta } from "@/data/site";
+
+/** 업종이 겹치지 않게 앞에서부터 고르고, 부족하면 순서대로 채워 최대 4건 */
+function getPortfolioPreviewItems(
+  list: readonly PortfolioItem[],
+  max = 4,
+): PortfolioItem[] {
+  const seenIndustry = new Set<PortfolioIndustry>();
+  const out: PortfolioItem[] = [];
+  for (const item of list) {
+    if (out.length >= max) break;
+    if (seenIndustry.has(item.industry)) continue;
+    seenIndustry.add(item.industry);
+    out.push(item);
+  }
+  for (const item of list) {
+    if (out.length >= max) break;
+    if (out.some((p) => p.id === item.id)) continue;
+    out.push(item);
+  }
+  return out.slice(0, max);
+}
+
+const portfolioPreviewItems = getPortfolioPreviewItems(portfolioItems);
+
+const portfolioServiceTypeLabel: Record<PortfolioServiceType, string> = {
+  landing: "랜딩",
+  homepage: "홈페이지",
+  custom: "맞춤 제작",
+};
+
+const portfolioProjectTypeLabel: Record<PortfolioProjectType, string> = {
+  conversion: "전환형",
+  info: "정보형",
+};
+
+const portfolioIndustryLabel: Record<PortfolioIndustry, string> = {
+  saas: "SaaS·IT",
+  commerce: "커머스",
+  corporate: "기업·B2B",
+  agency: "에이전시",
+  "public-sector": "공공·교육",
+};
 
 /** 랜딩·홈 각각에서 전환형·정보형을 하나씩 골라 미리보기 4장 구성 */
 function getTemplatePreviewItems(list: readonly Template[]): Template[] {
@@ -315,15 +364,78 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section id="portfolio-preview" aria-labelledby="portfolio-heading">
+      <Section
+        id="portfolio-preview"
+        aria-labelledby="portfolio-heading"
+        className="bg-neutral-50/50"
+      >
         <Container>
-          <SectionHeader>
+          <SectionHeader className="max-w-2xl">
             <SectionTitle id="portfolio-heading">포트폴리오 미리보기</SectionTitle>
             <SectionDescription>
-              사례 일부 — placeholder
+              실제 제작·운영 사례 중 일부입니다. 업종과 제작 유형을 함께
+              확인해 보세요.
             </SectionDescription>
           </SectionHeader>
-          <SectionPlaceholder label="포트폴리오 미리보기" />
+
+          <ul className="mt-10 grid list-none gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {portfolioPreviewItems.map((project) => (
+              <li key={project.id}>
+                <article className="flex h-full flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm ring-1 ring-neutral-900/5">
+                  <div
+                    className="flex aspect-[16/10] flex-col justify-end bg-neutral-800 px-4 py-3"
+                    aria-hidden
+                  >
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
+                      Case study
+                    </span>
+                    <span className="mt-1 truncate text-xs font-medium text-neutral-100">
+                      {portfolioIndustryLabel[project.industry]}
+                    </span>
+                  </div>
+                  <div className="flex flex-1 flex-col p-5">
+                    <div className="flex flex-wrap gap-2">
+                      <span className="rounded border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-xs font-medium text-neutral-800">
+                        {portfolioServiceTypeLabel[project.serviceType]}
+                      </span>
+                      <span className="rounded border border-neutral-200 bg-white px-2 py-0.5 text-xs text-neutral-600">
+                        {portfolioProjectTypeLabel[project.projectType]}
+                      </span>
+                    </div>
+                    <h3 className="mt-3 text-base font-semibold tracking-tight text-neutral-900">
+                      {project.name}
+                    </h3>
+                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-600">
+                      {project.shortDescription}
+                    </p>
+                    <ul className="mt-3 space-y-1.5 border-t border-neutral-100 pt-3 text-sm text-neutral-700">
+                      {project.highlights.slice(0, 2).map((line, index) => (
+                        <li
+                          key={`${project.id}-h-${index}`}
+                          className="flex gap-2"
+                        >
+                          <span
+                            className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-neutral-500"
+                            aria-hidden
+                          />
+                          <span className="line-clamp-2">{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-10 text-center">
+            <Link
+              href="/portfolio"
+              className="text-sm font-medium text-neutral-900 underline-offset-4 hover:underline"
+            >
+              전체 포트폴리오 보기
+            </Link>
+          </p>
         </Container>
       </Section>
 
