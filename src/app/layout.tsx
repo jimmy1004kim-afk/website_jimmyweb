@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Header } from "@/components/layout/Header";
 import { siteMeta } from "@/data/site";
 import "./globals.css";
 
@@ -33,6 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} font-sans`}
       >
         <div className="flex min-h-screen flex-col">
+          <Header />
           <main className="flex w-full flex-1 flex-col">{children}</main>
         </div>
       </body>
