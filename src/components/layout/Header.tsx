@@ -1,10 +1,53 @@
 import Link from "next/link";
 import { Container } from "@/components/common/Container";
-import { siteMeta } from "@/data/site";
+import { getButtonClassName } from "@/components/common/Button";
+import { mainNavigation, siteMeta, type NavItem } from "@/data/site";
+
+const navLinkClass =
+  "inline-flex items-center rounded-md px-2 py-2 text-sm font-medium text-neutral-700 transition-colors hover:text-neutral-900";
+
+function MainNavItem({ item }: { item: NavItem }) {
+  if (item.children?.length) {
+    return (
+      <li className="group relative">
+        <Link href={item.href} className={navLinkClass}>
+          {item.label}
+        </Link>
+        <div
+          className="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-[opacity,visibility] duration-150 group-hover:visible group-hover:opacity-100"
+          role="presentation"
+        >
+          <ul
+            className="min-w-[13rem] rounded-md border border-neutral-200 bg-white py-2 shadow-md"
+            role="list"
+          >
+            {item.children.map((sub) => (
+              <li key={sub.id}>
+                <Link
+                  href={sub.href}
+                  className="block px-4 py-2 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
+                >
+                  {sub.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </li>
+    );
+  }
+
+  return (
+    <li>
+      <Link href={item.href} className={navLinkClass}>
+        {item.label}
+      </Link>
+    </li>
+  );
+}
 
 /**
- * 공통 상단 헤더 뼈대.
- * 메뉴·CTA 내용은 이후 단계에서 `mainNavigation` / Button 등과 연결한다.
+ * 공통 상단 헤더 — `mainNavigation` 기반 데스크톱 메뉴, 서비스만 드롭다운.
  */
 export function Header() {
   return (
@@ -24,19 +67,20 @@ export function Header() {
             className="hidden min-h-10 flex-1 items-center justify-center lg:flex"
             aria-label="주 메뉴"
           >
-            {/* 메뉴 슬롯: 추후 mainNavigation 기반 렌더링 */}
-            <ul className="flex items-center gap-8" />
+            <ul className="flex items-center gap-6 xl:gap-8">
+              {mainNavigation.map((item) => (
+                <MainNavItem key={item.id} item={item} />
+              ))}
+            </ul>
           </nav>
 
-          <div
-            className="flex shrink-0 items-center justify-end"
-            data-slot="header-cta"
-          >
-            {/* CTA 슬롯: 추후 siteMeta.ctaLabel + Button + Link */}
-            <div
-              className="h-9 min-w-[5.5rem] rounded-md border border-dashed border-neutral-300 bg-transparent"
-              aria-hidden
-            />
+          <div className="flex shrink-0 items-center justify-end">
+            <Link
+              href={siteMeta.ctaHref}
+              className={getButtonClassName({ size: "sm" })}
+            >
+              {siteMeta.ctaLabel}
+            </Link>
           </div>
         </div>
       </Container>

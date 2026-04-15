@@ -29,6 +29,21 @@ const sizeClass: Record<ButtonSize, string> = {
 const baseClass =
   "inline-flex items-center justify-center transition-colors disabled:pointer-events-none disabled:opacity-50";
 
+/** `<Link>` 등에 부여해 Button과 동일한 시각 스타일을 맞출 때 사용한다. */
+export function getButtonClassName({
+  variant = "primary",
+  size = "md",
+  className,
+}: {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  className?: string;
+} = {}) {
+  return [baseClass, variantClass[variant], sizeClass[size], className]
+    .filter(Boolean)
+    .join(" ");
+}
+
 export function Button({
   children,
   variant = "primary",
@@ -40,9 +55,7 @@ export function Button({
   return (
     <button
       type={type}
-      className={[baseClass, variantClass[variant], sizeClass[size], className]
-        .filter(Boolean)
-        .join(" ")}
+      className={getButtonClassName({ variant, size, className })}
       {...props}
     >
       {children}
