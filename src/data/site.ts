@@ -65,7 +65,7 @@ export const mainNavigation: readonly NavItem[] = [
       {
         id: "services-operations",
         label: "운영 대행",
-        href: "/services/operations",
+        href: "/services/operation",
       },
     ],
   },
