@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { siteMeta } from "@/data/site";
 import "./globals.css";
@@ -36,6 +37,7 @@ export default function RootLayout({
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex w-full flex-1 flex-col">{children}</main>
+          <Footer />
         </div>
       </body>
     </html>
