@@ -8,7 +8,38 @@ import {
   SectionTitle,
 } from "@/components/common/Section";
 import { services } from "@/data/services";
+import {
+  templates,
+  type Template,
+  type TemplateKind,
+  type TemplateServiceType,
+} from "@/data/templates";
 import { siteMeta } from "@/data/site";
+
+/** 랜딩·홈 각각에서 전환형·정보형을 하나씩 골라 미리보기 4장 구성 */
+function getTemplatePreviewItems(list: readonly Template[]): Template[] {
+  const out: Template[] = [];
+  for (const serviceType of ["landing", "homepage"] as const) {
+    const subset = list.filter((t) => t.serviceType === serviceType);
+    const conversion = subset.find((t) => t.templateType === "conversion");
+    const info = subset.find((t) => t.templateType === "info");
+    if (conversion) out.push(conversion);
+    if (info) out.push(info);
+  }
+  return out;
+}
+
+const templatePreviewItems = getTemplatePreviewItems(templates);
+
+const templateServiceTypeLabel: Record<TemplateServiceType, string> = {
+  landing: "랜딩",
+  homepage: "홈페이지",
+};
+
+const templateKindLabel: Record<TemplateKind, string> = {
+  conversion: "전환형",
+  info: "정보형",
+};
 
 function SectionPlaceholder({ label }: { label: string }) {
   return (
@@ -221,13 +252,66 @@ export default function HomePage() {
 
       <Section id="templates-preview" aria-labelledby="templates-heading">
         <Container>
-          <SectionHeader>
+          <SectionHeader className="max-w-2xl">
             <SectionTitle id="templates-heading">템플릿 미리보기</SectionTitle>
             <SectionDescription>
-              템플릿 목록 일부 — placeholder
+              랜딩·홈, 전환형·정보형 조합 중 일부를 먼저 살펴보세요.
             </SectionDescription>
           </SectionHeader>
-          <SectionPlaceholder label="템플릿 미리보기" />
+
+          <ul className="mt-10 grid list-none gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {templatePreviewItems.map((template) => (
+              <li key={template.id}>
+                <article className="flex h-full flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
+                  <div
+                    className="flex aspect-[16/10] items-center justify-center bg-neutral-100 text-xs text-neutral-400"
+                    aria-hidden
+                  >
+                    썸네일
+                  </div>
+                  <div className="flex flex-1 flex-col p-5">
+                    <div className="flex flex-wrap gap-2">
+                      <span className="rounded-full border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-xs font-medium text-neutral-700">
+                        {templateServiceTypeLabel[template.serviceType]}
+                      </span>
+                      <span className="rounded-full border border-neutral-200 bg-white px-2 py-0.5 text-xs font-medium text-neutral-600">
+                        {templateKindLabel[template.templateType]}
+                      </span>
+                    </div>
+                    <h3 className="mt-3 text-base font-semibold tracking-tight text-neutral-900">
+                      {template.name}
+                    </h3>
+                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-600">
+                      {template.shortDescription}
+                    </p>
+                    <ul className="mt-3 space-y-1.5 border-t border-neutral-100 pt-3 text-sm text-neutral-700">
+                      {template.highlights.slice(0, 2).map((line, index) => (
+                        <li
+                          key={`${template.id}-h-${index}`}
+                          className="flex gap-2"
+                        >
+                          <span
+                            className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-neutral-400"
+                            aria-hidden
+                          />
+                          <span className="line-clamp-2">{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-10 text-center">
+            <Link
+              href="/templates"
+              className="text-sm font-medium text-neutral-900 underline-offset-4 hover:underline"
+            >
+              전체 템플릿 보기
+            </Link>
+          </p>
         </Container>
       </Section>
 
