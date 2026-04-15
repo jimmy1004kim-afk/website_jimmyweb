@@ -34,6 +34,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans`}
       >
+        {/* 세로 flex: viewport 높이 확보 + main이 남는 영역을 채워 짧은 페이지에서도 Footer가 하단에 위치 */}
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex w-full flex-1 flex-col">{children}</main>
